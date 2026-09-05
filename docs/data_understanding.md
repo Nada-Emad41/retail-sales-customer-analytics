@@ -213,4 +213,12 @@ The next stage of the project will investigate:
 - How should non-standard StockCodes be classified?
 - Should different analytical populations be used for sales, product, and customer analysis?
 
-No final cleaning or exclusion rules have been applied at this stage.
+No final cleaning or exclusion rules have been applied at this stage.                                                                                              
+
+## Next Stage
+
+The questions identified during this initial exploration were investigated further in the data quality assessment.
+
+The next stage examines the unusual transaction patterns in more detail and documents how missing values, cancellations, pricing anomalies, and other non-standard records should be handled before the main analysis.
+
+See: [Data Quality Assessment](data_quality_report.md)

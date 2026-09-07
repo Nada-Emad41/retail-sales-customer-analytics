@@ -174,21 +174,54 @@ Where appropriate, `StockCode` will be used as the main product identifier.
 
 ---
 
-## 6. Potential Duplicate Records
+## 6. Exact Duplicate Records
 
-Potential duplicates still need to be checked.
+Exact duplicate detection was performed in SQL because the dataset contains more than one million transaction lines and checking complete row-level duplicates in Excel Online was inefficient.
 
-It is important not to define a duplicate using only Invoice, StockCode, or Customer ID. The dataset is recorded at product-line level, so the same invoice can legitimately appear across multiple rows when a customer purchases several products.
+A duplicate was defined conservatively as a record where all original transaction fields matched exactly:
 
-A proper duplicate check needs to compare the complete transaction record.
+- Invoice
+- StockCode
+- Description
+- Quantity
+- InvoiceDate
+- Price
+- Customer ID
+- Country
 
-I initially considered performing this check in Excel, but the dataset contains more than one million rows across both periods. Running a row-level comparison across all transaction fields in Excel Online was inefficient.
+This is important because repeated invoice numbers, StockCodes, or Customer IDs alone do not indicate duplication. The dataset is recorded at product-line level, so the same invoice can legitimately contain multiple rows.
 
-Instead, exact duplicate detection will be performed during the SQL stage.
+### Results
 
-No records will be removed as duplicates until the duplicate records have been identified and reviewed.
+For 2009–2010:
+
+- 6,418 exact duplicate groups were identified.
+- These groups contained 6,865 additional repeated rows beyond the first occurrence.
+
+For 2010–2011:
+
+- 4,879 exact duplicate groups were identified.
+- These groups contained 5,268 additional repeated rows beyond the first occurrence.
+
+Across both periods:
+
+- 11,297 exact duplicate groups were identified.
+- 12,133 additional repeated rows were identified.
+
+Most duplicate groups occurred twice, although a smaller number appeared three or more times.
+
+### Interpretation
+
+These records are stronger duplicate candidates than repeated invoices or products because every original transaction field is identical.
+
+Keeping all repeated copies in the analytical dataset could overstate measures such as revenue, quantity, and transaction-line counts.
+
+For this reason, the raw tables will remain unchanged, but the analysis-ready dataset will retain one occurrence of each exact record and exclude the additional repeated copies.
+
+This preserves the original source data while preventing exact duplicate rows from distorting the business analysis.
 
 ---
+
 
 ## Current Data Quality Decisions
 
@@ -199,12 +232,21 @@ No records will be removed as duplicates until the duplicate records have been i
 | Zero prices | Investigated | Handle according to transaction pattern rather than applying one rule |
 | Missing Customer ID | Investigated | Retain where customer identity is not required |
 | Missing Description | Investigated | Retain where useful and do not fill missing descriptions without evidence |
-| Exact duplicates | Pending SQL validation | Identify and review exact duplicates before deciding whether to remove them |
-
+| Exact duplicates | Validated in SQL | Preserve raw data but exclude additional exact copies from the analysis-ready dataset |
 ---
 
 ## Next Step
 
-The next stage of the project will move from Excel-based data investigation to SQL.
+The main data quality issues have now been investigated and documented.
 
-I will first use SQL to identify potential exact duplicate records and understand their structure. After that, I will use the findings from this data quality assessment to define reproducible transformation rules before starting the main business analysis.
+The next stage will define the SQL transformation rules used to create an analysis-ready dataset while preserving the original raw tables.
+
+The transformation stage will include:
+
+- Removing additional exact duplicate copies while retaining one occurrence
+- Classifying standard sales, confirmed cancellations, and non-standard adjustment records
+- Keeping financial adjustments separate from merchandise sales
+- Preserving records with missing Customer IDs where customer-level analysis is not required
+- Creating a consistent base for sales, product, customer, market, and time-based analysis
+
+These transformation rules will be implemented in SQL so the preparation process remains reproducible and traceable.

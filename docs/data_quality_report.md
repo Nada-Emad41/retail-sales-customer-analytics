@@ -176,9 +176,7 @@ Where appropriate, `StockCode` will be used as the main product identifier.
 
 ## 6. Exact Duplicate Records
 
-Exact duplicate detection was performed in SQL because the dataset contains more than one million transaction lines and checking complete row-level duplicates in Excel Online was inefficient.
-
-A duplicate was defined conservatively as a record where all original transaction fields matched exactly:
+Exact duplicate validation was performed in PostgreSQL using all eight original transaction fields:
 
 - Invoice
 - StockCode
@@ -189,36 +187,53 @@ A duplicate was defined conservatively as a record where all original transactio
 - Customer ID
 - Country
 
-This is important because repeated invoice numbers, StockCodes, or Customer IDs alone do not indicate duplication. The dataset is recorded at product-line level, so the same invoice can legitimately contain multiple rows.
+A record was considered an exact duplicate only when all eight fields matched. Repeated invoice numbers or StockCodes alone were not treated as duplicates because an invoice can legitimately contain multiple product lines.
 
-### Results
+### Initial within-period checks
 
-For 2009–2010:
+When the two source periods were checked separately:
 
-- 6,418 exact duplicate groups were identified.
-- These groups contained 6,865 additional repeated rows beyond the first occurrence.
+- **2009–2010:** 6,865 additional exact copies
+- **2010–2011:** 5,268 additional exact copies
 
-For 2010–2011:
+This initially suggested **12,133 additional repeated rows** across the two periods.
 
-- 4,879 exact duplicate groups were identified.
-- These groups contained 5,268 additional repeated rows beyond the first occurrence.
+However, this was not the final duplicate count.
 
-Across both periods:
+### Cross-period overlap
 
-- 11,297 exact duplicate groups were identified.
-- 12,133 additional repeated rows were identified.
+The date ranges of the two source sheets were then checked:
 
-Most duplicate groups occurred twice, although a smaller number appeared three or more times.
+- **2009–2010:** 1 December 2009 to 9 December 2010
+- **2010–2011:** 1 December 2010 to 9 December 2011
 
-### Interpretation
+This revealed that the two sheets overlap during part of **December 2010**.
 
-These records are stronger duplicate candidates than repeated invoices or products because every original transaction field is identical.
+An exact comparison across all eight original fields identified **22,523 rows occurring in both source tables**.
 
-Keeping all repeated copies in the analytical dataset could overstate measures such as revenue, quantity, and transaction-line counts.
+Because some records can be duplicated both within an individual sheet and across the overlapping sheets, the within-sheet duplicate counts and cross-sheet overlap cannot simply be added together.
 
-For this reason, the raw tables will remain unchanged, but the analysis-ready dataset will retain one occurrence of each exact record and exclude the additional repeated copies.
+### Final combined duplicate validation
 
-This preserves the original source data while preventing exact duplicate rows from distorting the business analysis.
+Both source tables were combined using `UNION ALL`, and `ROW_NUMBER()` was applied across all eight original fields.
+
+This identified:
+
+- **Combined raw rows:** 1,067,371
+- **Excess exact copies:** 34,335
+- **Deduplicated rows:** 1,033,036
+
+The final authoritative duplicate count is therefore **34,335 excess exact copies** across the combined dataset.
+
+### Treatment
+
+The raw source tables were preserved unchanged.
+
+A separate cleaned table was created in SQL, retaining one copy of each exact transaction record and excluding only the additional exact copies.
+
+This produced the `retail_clean` table containing **1,033,036 rows**.
+
+This approach preserves the original data while preventing exact repeated records, including those caused by the overlapping source periods, from inflating the analysis.
 
 ---
 

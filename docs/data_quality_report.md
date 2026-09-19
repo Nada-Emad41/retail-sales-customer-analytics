@@ -250,18 +250,20 @@ This approach preserves the original data while preventing exact repeated record
 | Exact duplicates | Validated in SQL | Preserve raw data but exclude additional exact copies from the analysis-ready dataset |
 ---
 
-## Next Step
+## Next Stage
 
-The main data quality issues have now been investigated and documented.
+The data-quality assessment established the rules used to prepare the analysis-ready dataset.
 
-The next stage will define the SQL transformation rules used to create an analysis-ready dataset while preserving the original raw tables.
+These findings were carried forward into the SQL transformation stage, where the original raw tables were preserved and a reproducible analytical layer was created.
 
-The transformation stage will include:
+The implemented transformation included:
 
-- Removing additional exact duplicate copies while retaining one occurrence
-- Classifying standard sales, confirmed cancellations, and non-standard adjustment records
-- Keeping financial adjustments separate from merchandise sales
-- Preserving records with missing Customer IDs where customer-level analysis is not required
-- Creating a consistent base for sales, product, customer, market, and time-based analysis
+- retaining one occurrence of each exact transaction while excluding additional exact copies,
+- classifying standard sales, confirmed cancellations, non-standard adjustments, zero-price transactions, and financial adjustments,
+- preserving transactions with missing Customer IDs when customer identity was not required,
+- keeping non-standard activity separate from ordinary merchandise sales,
+- and creating a consistent analytical base for sales, product, customer, market, cancellation, and time-based analysis.
 
-These transformation rules will be implemented in SQL so the preparation process remains reproducible and traceable.
+The resulting SQL workflow provides the foundation for the validated business analysis and Power BI reporting used in the final project.
+
+See: [SQL Analysis Workflow](../sql/README.md)

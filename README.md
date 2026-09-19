@@ -45,7 +45,7 @@ The dataset contains transactional data from a UK-based non-store retailer cover
 
 The raw workbook contains two yearly worksheets and transaction-level fields related to invoices, products, quantities, prices, customers, dates, and countries.
 
-The dataset is currently being investigated before any cleaning rules are applied.
+The raw data was profiled and investigated before transformation rules were applied, with particular attention to missing values, cancellations, duplicate records, overlapping source periods, unusual transactions, and inconsistent product descriptions.
 
 ---
 
@@ -121,7 +121,7 @@ Examines repeat-customer behavior, customer revenue concentration, international
 - `data/` — dataset source and processing documentation
 - `docs/` — data understanding, data-quality assessment, and validated insight documentation
 - `sql/` — reproducible SQL workflow covering transformation, validation, and business analysis
-- `powerbi/screenshots/` — final Power BI dashboard views
+- `powerbi/` — Power BI report file, dashboard documentation, and final dashboard screenshots
 
 ---
 

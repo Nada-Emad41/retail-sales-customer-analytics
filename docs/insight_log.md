@@ -105,7 +105,7 @@ Some smaller international markets showed higher average order values, but these
 
 The UK is clearly the core market in this dataset. The high concentration also means that overall business performance is strongly influenced by the domestic market.
 
-International markets may still be worth investigating for growth opportunities, but high average order values alone are not enough to conclude that a market is more attractive without considering its customer base, order volume, and consistency over time.
+International markets may warrant further investigation, but high average order values alone are not sufficient to indicate stronger market performance without considering customer base, order volume, cancellation behavior, and consistency over time.
 
 ---
 

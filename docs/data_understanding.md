@@ -173,52 +173,58 @@ However, the exact business meaning of these records has not yet been confirmed.
 
 ---
 
-## 7. Initial Data Quality Concerns
+## 7. Data Quality Concerns Identified
 
-The initial investigation identified several areas requiring further analysis:
+The initial investigation identified several areas requiring deeper validation:
 
-1. Missing Customer IDs may limit customer-level analysis.
-2. Missing product descriptions require investigation before deciding whether affected rows remain useful.
-3. Negative quantities include both documented cancellations and a separate non-cancellation pattern.
-4. Zero-price transactions require classification before revenue analysis.
-5. A very small number of negative-price records require individual investigation.
-6. Potential duplicate records require analysis at the transaction-line grain rather than using Invoice alone.
-7. Non-standard StockCodes and transaction descriptions may represent operational transaction types rather than ordinary merchandise.
-8. A single unusual positive-quantity C-prefixed transaction was identified in the first year.
+1. Missing Customer IDs could limit customer-level analysis.
+2. Missing product descriptions required investigation before determining whether affected rows remained analytically useful.
+3. Negative quantities included both documented cancellations and a separate non-cancellation pattern.
+4. Zero-price transactions required classification before revenue analysis.
+5. A small number of negative-price records required individual investigation.
+6. Potential duplicate records needed to be assessed at the transaction-line grain rather than using Invoice alone.
+7. Non-standard StockCodes and transaction descriptions could represent operational transaction types rather than ordinary merchandise.
+8. A single unusual positive-quantity C-prefixed transaction was identified in the first source period.
 
----
-
-## 8. Current Analytical Interpretation
-
-The profiling results show that unusual records should not be treated with a single blanket cleaning rule.
-
-In particular, negative quantities cannot automatically be removed because they occur under different transaction patterns.
-
-The negative non-cancellation population shows a repeatable structure across both years: missing Customer ID, zero Price, and negative Quantity. Descriptions observed within this population also include terms associated with damage, missing stock, corrections, and other non-standard activity.
-
-At this stage, these records are treated as a separate population requiring further investigation rather than as confirmed data errors.
+These findings formed the basis of the subsequent data-quality assessment.
 
 ---
 
-## 9. Open Questions
+## 8. Initial Analytical Interpretation
 
-The next stage of the project will investigate:
+The profiling stage showed that unusual records could not be handled with a single blanket cleaning rule.
+
+In particular, negative quantities appeared under different transaction patterns and therefore could not simply be removed from the dataset.
+
+The negative non-cancellation population showed a consistent structure across both source periods: missing Customer ID, zero Price, and negative Quantity. Descriptions within this population also included references to damage, missing stock, corrections, and other non-standard activity.
+
+At this stage of the workflow, these records were therefore separated for further investigation rather than being immediately classified as errors or removed.
+
+---
+
+## 9. Questions Carried Forward to Data Quality Assessment
+
+The data-understanding stage raised the following questions:
 
 - How should cancellations be treated when calculating sales performance?
-- What do the negative non-cancellation records represent operationally?
-- What business meaning should be assigned to zero-price transactions?
-- What caused the small number of negative-price transactions?
-- Can transactions with missing Customer IDs still be used for sales and product analysis?
-- Which fields should define a potential duplicate transaction line?
-- How should non-standard StockCodes be classified?
+- What do negative non-cancellation records represent analytically?
+- How should zero-price transactions be classified?
+- What explains the small number of negative-price transactions?
+- Can transactions with missing Customer IDs still support sales and product analysis?
+- Which fields should define an exact duplicate transaction line?
+- How should non-standard StockCodes be handled?
 - Should different analytical populations be used for sales, product, and customer analysis?
 
-No final cleaning or exclusion rules have been applied at this stage.                                                                                              
+These questions were intentionally left unresolved during initial profiling rather than making premature cleaning decisions.
+
+They were subsequently investigated in the data-quality assessment, where the analytical treatment and classification rules used in the final SQL and Power BI analysis were defined.
+
+---
 
 ## Next Stage
 
-The questions identified during this initial exploration were investigated further in the data quality assessment.
+The findings from this profiling stage were carried forward into the formal data-quality assessment.
 
-The next stage examines the unusual transaction patterns in more detail and documents how missing values, cancellations, pricing anomalies, and other non-standard records should be handled before the main analysis.
+That stage documents the investigation of duplicate records and overlapping source periods, missing values, cancellations, pricing anomalies, non-standard transactions, and the analytical rules used before business analysis.
 
 See: [Data Quality Assessment](data_quality_report.md)

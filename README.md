@@ -49,41 +49,84 @@ The dataset is currently being investigated before any cleaning rules are applie
 
 ---
 
-## Current Project Stage
+## Project Progress
 
-### Phase 1 — Data Understanding
+The project has progressed from raw-data investigation through SQL analysis, data modeling, and interactive Power BI reporting.
 
-Currently investigating:
+Completed work includes:
 
-- dataset structure,
-- transaction grain,
-- invoice and product relationships,
-- missing information,
-- quantity and pricing behavior,
-- cancellations,
-- potential duplicates,
-- and other data-quality concerns.
-
-No final analytical conclusions have been made at this stage.
+- profiling and validating more than 1 million raw transaction rows,
+- investigating missing values, cancellations, unusual transactions, and exact duplicates,
+- identifying and resolving cross-period overlap between the source worksheets,
+- building a reproducible SQL transformation and analysis workflow,
+- analyzing sales, products, customers, markets, and cancellation behavior,
+- building a dimensional model for business reporting,
+- creating DAX measures for key business KPIs,
+- and developing a three-page Power BI dashboard.
 
 ---
 
-## Tools
+## Power BI Dashboard
 
-Tools will be selected according to the analytical requirement during the project.
+The Power BI report translates the validated analytical results into three business-focused views.
 
-Planned tools include:
+### Executive Overview
 
-- Excel
-- SQL
-- Power Query
-- Power BI
-- GitHub
+Provides a management-level view of revenue, orders, customers, cancellation impact, monthly performance, leading products, and geographic performance.
+
+![Executive Overview](powerbi/screenshots/executive_overview.png)
+
+### Sales & Product Performance
+
+Explores monthly net revenue, cancellation impact over time, leading products by net revenue, and products with the highest sales volume.
+
+![Sales & Product Performance](powerbi/screenshots/sales_product_performance.png)
+
+### Customer & Market Insights
+
+Examines repeat-customer behavior, customer revenue concentration, international market performance, UK revenue concentration, and cancellation impact across major markets.
+
+![Customer & Market Insights](powerbi/screenshots/customer_market_insights.png)
+
+---
+
+## Tools & Technologies
+
+- **PostgreSQL / SQL** — data validation, transformation, reconciliation, and business analysis
+- **Power Query** — data preparation for reporting
+- **Power BI** — dimensional modeling, DAX measures, interactive analysis, and dashboard development
+- **GitHub** — project documentation and reproducible analytical workflow
+
+---
+
+## Key Validated KPIs
+
+- **Gross Revenue:** 20.48M
+- **Cancellation Value:** 1.46M
+- **Net Revenue:** 19.01M
+- **Cancellation Impact:** 7.14%
+- **Total Sale Orders:** 40,077
+- **Identified Customers:** 5,878
+- **Repeat Customers:** 4,255
+- **Repeat Customer Rate:** 72.39%
+- **UK Share of Net Revenue:** 84.91%
+- **Top 10 Customer Revenue Share:** 16.30%
+
+> December 2009 and December 2011 represent partial reporting periods and are interpreted accordingly in time-based analysis.
+
+---
+
+## Repository Structure
+
+- `data/` — dataset source and processing documentation
+- `docs/` — data understanding, data-quality assessment, and validated insight documentation
+- `sql/` — reproducible SQL workflow covering transformation, validation, and business analysis
+- `powerbi/screenshots/` — final Power BI dashboard views
 
 ---
 
 ## Project Status
 
-🚧 **In Progress — Data Understanding & Quality Assessment**
+✅ **Core analysis and Power BI dashboard completed**
 
-The repository will be updated progressively as each analytical stage is completed.
+The repository documents the analytical process from raw-data investigation and quality validation through SQL analysis, business interpretation, and interactive reporting.
